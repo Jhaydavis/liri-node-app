@@ -1,0 +1,18 @@
+{
+  "name": "liri",
+  "version": "1.0.0",
+  "description": "aggregator app",
+  "main": "keys.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jhay Davis",
+  "license": "ISC",
+  "dependencies": {
+    "node-spotify-api": "^1.0.7",
+    "omdb-api-pt": "^2.0.1",
+    "request": "^2.83.0",
+    "spotify": "^0.3.0",
+    "twitter": "^1.7.1"
+  }
+}
