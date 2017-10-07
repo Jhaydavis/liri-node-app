@@ -1,11 +1,11 @@
 //Load required packages and assignment of global variable
 
-var fs = require("fs"); 
-var request = require("request"); 
+var fs = require("fs");
+var request = require("request");
 var keys = require("./keys.js");
 var spotify = require("spotify");
 var Twitter = require("twitter");
-var client = new Twitter(keys.twitterKeys); 
+var client = new Twitter(keys.twitterKeys);
 var myCommand = process.argv[2];
 var theArtist = process.argv[3];
 
@@ -37,21 +37,26 @@ function beginCode(mCom, theArtist) {
 }
 
 function runTwitter() {
-	var tweetsLength;
-	
+
 	//From twitter's NPM documentation, grab the most recent tweets
 	var params = {
-		screen_name: 'jhayfullstack'
+		screen_name: "jhayfullstack",
+		count: 20
 	};
-	client.get('statuses/user_timeline', function (error, tweets, response) {
+	var tweetsLength;
+
+	
+
+	client.get('statuses/user_timeline', params, function (error, tweets, response) {
 		if (error) throw error;
 		tweetsLength = 0;
+		console.log("made it this far");
 
 		for (var i = 0; i < tweets.length; i++) {
 			tweetsLength++;
 		}
-		if (tweetsLength > 5) {
-			tweetsLength = 5;
+		if (tweetsLength > 20) {
+			tweetsLength = 20;
 		}
 		for (var i = 0; i < tweetsLength; i++) {
 			console.log("Tweet " + (i + 1) + " created on: " + tweets[i].created_at);
@@ -61,6 +66,7 @@ function runTwitter() {
 			appendFile("Tweet " + (i + 1) + " created on: " + tweets[i].created_at);
 			appendFile("Tweet " + (i + 1) + " text: " + tweets[i].text);
 			appendFile("******************************************************");
+			
 		}
 	});
 }
@@ -85,17 +91,18 @@ function runSpotify(song) {
 	}
 	console.log("Searching for: " + songName);
 	console.log("******************************************************");
+	console.log("");
 
 	appendFile("Searching for: " + songName);
 	appendFile("******************************************************");
 
 	var Spotify = require('node-spotify-api');
-	
+
 	var spotify = new Spotify({
-	  id: 'c8a05ac256924c0788d87146d19d45ae',
-	  secret: '44fbc98a08cd475a8bb0ab6c9c1d2b59'
+		id: 'c8a05ac256924c0788d87146d19d45ae',
+		secret: '44fbc98a08cd475a8bb0ab6c9c1d2b59'
 	});
-	
+
 	spotify.search({
 		type: 'track',
 		query: songName
@@ -122,6 +129,10 @@ function runSpotify(song) {
 			console.log("Artist: " + dataItems[matchedTracks[0]].artists[0].name);
 			console.log("Album: " + dataItems[matchedTracks[0]].album.name);
 			console.log("Spotify link: " + dataItems[matchedTracks[0]].external_urls.spotify);
+			console.log("");
+			console.log("***************** End of File ******************")
+			console.log("");
+			console.log("");
 
 			appendFile("Track: " + dataItems[matchedTracks[0]].name);
 			appendFile("Artist: " + dataItems[matchedTracks[0]].artists[0].name);
@@ -148,27 +159,32 @@ function runOMDB(movieName) {
 		if (!error && response.statusCode == 200) {
 			console.log("Everything working fine.");
 		}
+		console.log("");
+		console.log("");
 		console.log("******************************************************");
-		console.log("The movie's title is: " + JSON.parse(data)["Title"]);
-		console.log("The movie's release year is: " + JSON.parse(data)["Year"]);
-		console.log("The movie's rating is: " + JSON.parse(data)["imdbRating"]);
-		console.log("The movie's was produced in: " + JSON.parse(data)["Country"]);
-		console.log("The movie's language is: " + JSON.parse(data)["Language"]);
-		console.log("The movie's plot: " + JSON.parse(data)["Plot"]);
-		console.log("The movie's actors: " + JSON.parse(data)["Actors"]);
-		console.log("The movie's Rotten Tomatoes Rating: " + JSON.parse(data)["tomatoRating"]);
-		console.log("The movie's Rotten Tomatoes URL: " + JSON.parse(data)["tomatoURL"]);
+		console.log("Title of movie: " + JSON.parse(data)["Title"]);
+		console.log("The release year was: " + JSON.parse(data)["Year"]);
+		console.log("The rating was: " + JSON.parse(data)["imdbRating"]);
+		console.log("Country of origin: " + JSON.parse(data)["Country"]);
+		console.log("Original language: " + JSON.parse(data)["Language"]);
+		console.log("Plot: " + JSON.parse(data)["Plot"]);
+		console.log("Actors: " + JSON.parse(data)["Actors"]);
+		console.log("Rotten Tomatoes Rating: " + JSON.parse(data)["tomatoRating"]);
+		console.log("Rotten Tomatoes URL: " + JSON.parse(data)["tomatoURL"]);
+		console.log("******************************************************");
+		console.log("");
+		console.log("");
 
 		appendFile("******************************************************");
-		appendFile("The movie's title is: " + JSON.parse(data)["Title"]);
-		appendFile("The movie's release year is: " + JSON.parse(data)["Year"]);
-		appendFile("The movie's rating is: " + JSON.parse(data)["imdbRating"]);
-		appendFile("The movie's was produced in: " + JSON.parse(data)["Country"]);
-		appendFile("The movie's language is: " + JSON.parse(data)["Language"]);
-		appendFile("The movie's plot: " + JSON.parse(data)["Plot"]);
-		appendFile("The movie's actors: " + JSON.parse(data)["Actors"]);
-		appendFile("The movie's Rotten Tomatoes Rating: " + JSON.parse(data)["tomatoRating"]);
-		appendFile("The movie's Rotten Tomatoes URL: " + JSON.parse(data)["tomatoURL"]);
+		appendFile("Title of movie:" + JSON.parse(data)["Title"]);
+		appendFile("The release year was: " + JSON.parse(data)["Year"]);
+		appendFile("The rating was: " + JSON.parse(data)["imdbRating"]);
+		appendFile("Country of origin: " + JSON.parse(data)["Country"]);
+		appendFile("Original language:: " + JSON.parse(data)["Language"]);
+		appendFile("Plot: " + JSON.parse(data)["Plot"]);
+		appendFile("Actors: " + JSON.parse(data)["Actors"]);
+		appendFile("Rotten Tomatoes Rating: " + JSON.parse(data)["tomatoRating"]);
+		appendFile("Rotten Tomatoes URL: " + JSON.parse(data)["tomatoURL"]);
 	});
 }
 
